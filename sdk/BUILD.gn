@@ -887,22 +887,13 @@ group("create_sdk") {
 
 
 
-group("create_cc_all") {
+group("create_cc_sdk") {
 
   gen_snapshots = [
     "gen_snapshot_product_linux_arm64",
     "gen_snapshot_product_linux_x64",
     "gen_snapshot_product_android_arm64"
   ]
-
-  if (dart_target_arch == "x64") {
-    arch_name = "x86_64"
-  } else if (dart_target_arch == "x86" || dart_target_arch == "arm"
-      || dart_target_arch == "ia32") {
-    assert(true, "32-bit hosts aren't supported.")
-  } else {
-    arch_name = dart_target_arch
-  }
 
   if (target_os == "win") {
     if (dart_target_arch == "x64") {
@@ -934,7 +925,7 @@ group("create_cc_all") {
     sources =
     [ "$src_dir/${dart_aotruntime_stripped_binary}${executable_suffix}" ]
     outputs = [
-      "$root_out_dir/dartcc-sdk/bin/dartaotruntime_${os_name}_$arch_name${executable_suffix}",
+      "$root_out_dir/dartcc-sdk/bin/dartaotruntime_${os_name}_${dart_target_arch}${executable_suffix}",
     ]
   }
 
@@ -942,10 +933,13 @@ group("create_cc_all") {
     deps = [ "../utils/gen_kernel" ]
     sources = [ "$root_gen_dir/gen_kernel_aot.dart.snapshot" ]
     outputs =
-    [ "$root_out_dir/dartcc-sdk/bin/snapshots/gen_kernel_${os_name}_${arch_name}.aot" ]
+    [ "$root_out_dir/dartcc-sdk/bin/snapshots/gen_kernel_${os_name}_${dart_target_arch}.aot" ]
   }
-
-  public_deps = [ ":cc_gen_kernel", ":cc_aotruntime" ]
+  copy("cc_license") {
+    sources = [ "../LICENSE" ]
+    outputs = [ "$root_out_dir/dartcc-sdk/LICENSE" ]
+  }
+  public_deps = [ ":cc_gen_kernel", ":cc_aotruntime", ":cc_license" ]
   foreach(gen_snapshot, gen_snapshots) {
     copy("cc_$gen_snapshot") {
       deps = [ "../runtime/bin:$gen_snapshot" ]

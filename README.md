@@ -1,7 +1,7 @@
 ## Modified Dart SDK for cross compilation support
 The ``dartcc-sdk`` just took some changes in the build pipeline.
 
-With ``create_cc_all`` you can build all binaries, available on this platform.
+With ``create_cc_sdk`` you can build all binaries, available on this platform.
 In the releases tab you will find binary kits, which consist of all required binaries 
 to support cross compilation on the taken host.
 
