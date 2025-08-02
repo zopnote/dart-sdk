@@ -141,6 +141,42 @@ config("dart_linux_x64_config") {
   ]
 }
 
+config("dart_windows_x64_config") {
+  defines = [
+    "DART_TARGET_OS_WINDOWS",
+    "TARGET_ARCH_X64",
+  ]
+}
+
+config("dart_windows_arm64_config") {
+  defines = [
+    "DART_TARGET_OS_WINDOWS",
+    "TARGET_ARCH_ARM64",
+  ]
+}
+
+config("dart_macos_arm64_config") {
+  defines = [
+    "DART_TARGET_OS_MACOS",
+    "TARGET_ARCH_ARM64",
+  ]
+}
+
+config("dart_android_arm64_config") {
+  defines = [
+    "DART_TARGET_OS_ANDROID",
+    "TARGET_ARCH_ARM64",
+  ]
+}
+
+config("dart_ios_arm64_config") {
+  defines = [
+    "DART_TARGET_OS_MACOS",
+    "DART_TARGET_OS_MACOS_IOS",
+    "TARGET_ARCH_ARM64",
+  ]
+}
+
 config("dart_arch_config") {
   defines = []
 

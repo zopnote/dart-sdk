@@ -884,3 +884,70 @@ group("create_sdk") {
     public_deps += [ ":create_full_sdk" ]
   }
 }
+
+
+
+group("create_cc_all") {
+
+  gen_snapshots = [
+    "gen_snapshot_product_linux_arm64",
+    "gen_snapshot_product_linux_x64",
+    "gen_snapshot_product_android_arm64"
+  ]
+
+  if (dart_target_arch == "x64") {
+    arch_name = "x86_64"
+  } else if (dart_target_arch == "x86" || dart_target_arch == "arm"
+      || dart_target_arch != "ia32") {
+    assert(true, "32-bit hosts aren't supported.")
+  } else {
+    arch_name = dart_target_arch
+  }
+
+  if (target_os == "win") {
+    gen_snapshots += [
+      "gen_snapshot_product_windows_x64",
+      "gen_snapshot_product_windows_arm64"
+    ]
+    os_name = "windows"
+  } else if (target_os == "mac") {
+    gen_snapshots += [
+      "gen_snapshot_product_macos_arm64",
+      "gen_snapshot_product_ios_arm64"
+    ]
+    os_name = "macos"
+  } else if (target_os == "fuchsia") {
+    assert(true, "Fuchsia isn't supported.")
+  } else {
+    os_name = target_os
+  }
+
+
+  copy("cc_aotruntime") {
+    deps = [ "../runtime/bin:dartaotruntime_product" ]
+    src_dir =
+    get_label_info("../runtime/bin:dartaotruntime_product", "root_out_dir")
+    sources =
+    [ "$src_dir/${dart_aotruntime_stripped_binary}${executable_suffix}" ]
+    outputs = [
+      "$root_out_dir/dartcc-sdk/bin/dartaotruntime_${os_name}_${arch_name}${executable_suffix}",
+    ]
+  }
+
+  copy("cc_gen_kernel") {
+    deps = [ "../utils/gen_kernel" ]
+    sources = [ "$root_gen_dir/gen_kernel_aot.dart.snapshot" ]
+    outputs =
+    [ "$root_out_dir/dartcc-sdk/bin/snapshots/{{source_file_part}}" ]
+  }
+
+  public_deps = [ ":cc_gen_kernel", ":cc_aotruntime" ]
+  foreach(gen_snapshot, gen_snapshots) {
+    copy("cc_$gen_snapshot") {
+      deps = [ "../runtime/bin:$gen_snapshot" ]
+      sources = [ "$root_out_dir/$gen_snapshot${executable_suffix}" ]
+      outputs = [ "$root_out_dir/dartcc-sdk/bin/utils/$gen_snapshot${executable_suffix}" ]
+    }
+    public_deps += [ ":cc_$gen_snapshot" ]
+  }
+}
