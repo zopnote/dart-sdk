@@ -898,15 +898,19 @@ group("create_cc_all") {
   if (dart_target_arch == "x64") {
     arch_name = "x86_64"
   } else if (dart_target_arch == "x86" || dart_target_arch == "arm"
-      || dart_target_arch != "ia32") {
+      || dart_target_arch == "ia32") {
     assert(true, "32-bit hosts aren't supported.")
   } else {
     arch_name = dart_target_arch
   }
 
   if (target_os == "win") {
+    if (dart_target_arch == "x64") {
+      gen_snapshots += [
+        "gen_snapshot_product_windows_x64"
+      ]
+    }
     gen_snapshots += [
-      "gen_snapshot_product_windows_x64",
       "gen_snapshot_product_windows_arm64"
     ]
     os_name = "windows"
@@ -930,7 +934,7 @@ group("create_cc_all") {
     sources =
     [ "$src_dir/${dart_aotruntime_stripped_binary}${executable_suffix}" ]
     outputs = [
-      "$root_out_dir/dartcc-sdk/bin/dartaotruntime_${os_name}_${arch_name}${executable_suffix}",
+      "$root_out_dir/dartcc-sdk/bin/dartaotruntime_${os_name}_$arch_name${executable_suffix}",
     ]
   }
 
