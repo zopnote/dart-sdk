@@ -938,7 +938,7 @@ group("create_cc_all") {
     deps = [ "../utils/gen_kernel" ]
     sources = [ "$root_gen_dir/gen_kernel_aot.dart.snapshot" ]
     outputs =
-    [ "$root_out_dir/dartcc-sdk/bin/snapshots/{{source_file_part}}" ]
+    [ "$root_out_dir/dartcc-sdk/bin/snapshots/gen_kernel_${os_name}_${arch_name}.aot" ]
   }
 
   public_deps = [ ":cc_gen_kernel", ":cc_aotruntime" ]
