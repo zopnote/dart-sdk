@@ -5,27 +5,26 @@ With ``create_cc_all`` you can build all binaries, available on this platform.
 In the releases tab you will find binary kits, which consist of all required binaries 
 to support cross compilation on the taken host.
 
-Dart is:
+## In depth information about embedding the binaries
+There are three binaries required to build a self-contained executable for desktop targets. 
+For mobile there also have to be an embedder. Under ``samples/embedder`` is an embedder currently developed as part of the sdk. 
+Furthermore, this fork belongs to ``dartcc``, an advanced Dart compiler, which also implements an embedder for mobile devices.
 
-  * **Approachable**:
-  Develop with a strongly typed programming language that is consistent,
-  concise, and offers modern language features like null safety and patterns.
+The three binaries are:
+* ``gen_snapshot_<platform>`` executable (run on host)
+* ``gen_kernel_<platform>.aot`` snapshot (run on host)
+* ``aotruntime_<platform>`` executable (run on target)
 
-  * **Portable**:
-  Compile to ARM, x64, or RISC-V machine code for mobile, desktop, and backend.
-  Compile to JavaScript or WebAssembly for the web.
+The ``gen_kernel`` binary have to be compiled on the host platform, can only run on the host platform and will generate
+cross-platform or platform-dependent kernel snapshots.
+Based on the configurations the produced kernel can be used
+with the ``gen_snapshot`` tool to produce binary blobs.
 
-  * **Productive**:
-  Make changes iteratively: use hot reload to see the result instantly in your running app.
-  Diagnose app issues using [DevTools](https://dart.dev/tools/dart-devtools).
----
-![Dart platforms illustration](docs/assets/Dart-platforms.svg)
+The ``gen_snapshot`` binary have to be compiled on the host platform, can only run on the host platform and will only
+generate code for the target platform.
+It generates 3 different binary blobs, data about the kernel, the isolate and code.
 
-## Building
-
-[Getting the source, preparing your machine to build the SDK, and building][building], then just pick the ``create_cc_all`` target.
-
-## Roadmap
-
-Future plans for Dart are included in the combined Dart and Flutter
-[roadmap][roadmap] on the Flutter wiki.
+The binary blobs need an ``aotruntime`` to work properly on the desired platform.
+The 3 binaries will be linked with the runtime to create a self-contained executable on desktop.
+For mobile another piece have to come together. The runtime has then to be embedded 
+into a C/C++ application that uses the Dart C and, for additional features the Dart C++ interfaces.
