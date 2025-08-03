@@ -1,0 +1,73 @@
+name: Build platform available artifact packages
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    strategy:
+      matrix:
+        os:
+        - macos-latest
+        - windows-latest
+        - ubuntu-latest
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@v1
+
+      - name: Clone dart advanced compiler for ci scripts
+        run: git clone https://github.com/zopnote/dartcc.git
+
+      - name: Resolve dependencies
+        run: dart pub get
+        working-directory: dartcc
+
+      - name: Build artifacts
+        run: dart run build/build.dart dart_sdk
+        working-directory: dartcc
+
+      - name: Save macos_arm64 artifacts
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'sdk_macos_arm64'
+          path: dartcc/out/dart_sdk/sdk/xcodebuild/out/ProductXARM64
+
+      - name: Save ios_arm64 artifacts
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'sdk_ios_arm64'
+          path: dartcc/out/dart_sdk/sdk/xcodebuild/out/ProductiOSARM64
+
+      - name: Save android_arm64 artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'sdk_android_arm64'
+          path: dartcc/out/dart_sdk/sdk/out/ProductAndroidARM64
+
+      - name: Save windows_x64 artifacts
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'sdk_windows_x64'
+          path: dartcc/out/dart_sdk/sdk/out/ProductX64
+
+      - name: Save windows_arm64 artifacts
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'sdk_windows_arm64'
+          path: dartcc/out/dart_sdk/sdk/out/ProductXARM64
+
+      - name: Save linux_x64 artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'sdk_linux_arm64'
+          path: dartcc/out/dart_sdk/sdk/out/ProductX64
+
+      - name: Save linux_arm64 artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'sdk_linux_x64'
+          path: dartcc/out/dart_sdk/sdk/out/ProductXARM64

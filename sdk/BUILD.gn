@@ -885,7 +885,9 @@ group("create_sdk") {
   }
 }
 
+group("create_cc_embbed") {
 
+}
 
 group("create_cc_sdk") {
 
