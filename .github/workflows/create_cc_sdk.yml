@@ -31,43 +31,43 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: 'sdk_macos_arm64'
-          path: dartcc/out/dart_sdk/sdk/xcodebuild/out/ProductXARM64
+          path: dartcc/out/dart_sdk/sdk/xcodebuild/out/ProductXARM64/dartcc-sdk
 
       - name: Save ios_arm64 artifacts
         if: runner.os == 'macOS'
         uses: actions/upload-artifact@v4
         with:
           name: 'sdk_ios_arm64'
-          path: dartcc/out/dart_sdk/sdk/xcodebuild/out/ProductiOSARM64
+          path: dartcc/out/dart_sdk/sdk/xcodebuild/out/ProductiOSARM64/dartcc-sdk
 
       - name: Save android_arm64 artifacts
         uses: actions/upload-artifact@v4
         with:
           name: 'sdk_android_arm64'
-          path: dartcc/out/dart_sdk/sdk/out/ProductAndroidARM64
+          path: dartcc/out/dart_sdk/sdk/out/ProductAndroidARM64/dartcc-sdk
 
       - name: Save windows_x64 artifacts
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
           name: 'sdk_windows_x64'
-          path: dartcc/out/dart_sdk/sdk/out/ProductX64
+          path: dartcc/out/dart_sdk/sdk/out/ProductX64/dartcc-sdk
 
       - name: Save windows_arm64 artifacts
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
           name: 'sdk_windows_arm64'
-          path: dartcc/out/dart_sdk/sdk/out/ProductXARM64
+          path: dartcc/out/dart_sdk/sdk/out/ProductXARM64/dartcc-sdk
 
       - name: Save linux_x64 artifacts
         uses: actions/upload-artifact@v4
         with:
           name: 'sdk_linux_arm64'
-          path: dartcc/out/dart_sdk/sdk/out/ProductX64
+          path: dartcc/out/dart_sdk/sdk/out/ProductX64/dartcc-sdk
 
       - name: Save linux_arm64 artifacts
         uses: actions/upload-artifact@v4
         with:
           name: 'sdk_linux_x64'
-          path: dartcc/out/dart_sdk/sdk/out/ProductXARM64
+          path: dartcc/out/dart_sdk/sdk/out/ProductXARM64/dartcc-sdk
