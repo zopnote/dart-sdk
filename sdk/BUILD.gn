@@ -885,9 +885,32 @@ group("create_sdk") {
   }
 }
 
-group("create_cc_embbed") {
 
+copy("cc_aotruntime") {
+  deps = [ "../runtime/bin:dartaotruntime_product" ]
+  src_dir =
+  get_label_info("../runtime/bin:dartaotruntime_product", "root_out_dir")
+  sources =
+  [ "$src_dir/${dart_aotruntime_stripped_binary}${executable_suffix}" ]
+  outputs = [
+    "$root_out_dir/dartcc-sdk/bin/dartaotruntime_${os_name}_${dart_target_arch}${executable_suffix}",
+  ]
 }
+
+
+group("create_cc_aotruntime") {
+  if (target_os == "win") {
+    os_name = "windows"
+  } else if (target_os == "mac") {
+    os_name = "macos"
+  } else if (target_os == "fuchsia") {
+    assert(true, "Fuchsia isn't supported.")
+  } else {
+    os_name = target_os
+  }
+  public_deps = [":cc_aotruntime"]
+}
+
 
 group("create_cc_sdk") {
 
@@ -917,18 +940,6 @@ group("create_cc_sdk") {
     assert(true, "Fuchsia isn't supported.")
   } else {
     os_name = target_os
-  }
-
-
-  copy("cc_aotruntime") {
-    deps = [ "../runtime/bin:dartaotruntime_product" ]
-    src_dir =
-    get_label_info("../runtime/bin:dartaotruntime_product", "root_out_dir")
-    sources =
-    [ "$src_dir/${dart_aotruntime_stripped_binary}${executable_suffix}" ]
-    outputs = [
-      "$root_out_dir/dartcc-sdk/bin/dartaotruntime_${os_name}_${dart_target_arch}${executable_suffix}",
-    ]
   }
 
   copy("cc_gen_kernel") {

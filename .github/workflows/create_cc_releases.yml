@@ -1,0 +1,184 @@
+name: Create binary release packages
+on:
+    workflow_dispatch:
+    push:
+      tags:
+        - "v*.*.*"
+
+jobs:
+  collect:
+    runs-on:
+      ubuntu-latest
+    steps:
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@v1
+
+      - name: Setup zip
+        uses: montudor/action-zip@v1
+
+      - name: Compile binaries
+        uses: ./.github/workflows/create_cc_binaries.yml
+
+
+
+
+      - name: Add macos_arm64 binaries to macos_arm64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: macos_arm64
+          path: macos_arm64
+
+      - name: Add ios_arm64 binaries to macos_arm64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: ios_arm64
+          path: macos_arm64
+
+      - name: Add linux_x86_64 aotruntime binary to macos_arm64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: linux_x86_64_aotruntime
+          path: macos_arm64
+
+      - name: Add linux_arm64 aotruntime binary to macos_arm64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: linux_arm64_aotruntime
+          path: macos_arm64
+
+      - name: Add android_arm64 binaries to macos_arm64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: android_arm64
+          path: macos_arm64
+
+      - name: Zip macos_arm64 release binaries
+        run: zip -qq -r macos_arm64.zip macos_arm64
+
+
+
+
+
+      - name: Add windows_x86_64 binaries to windows_x86_64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: windows_x86_64
+          path: windows_x86_64
+
+      - name: Add windows_arm64 binaries to windows_x86_64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: windows_arm64_aotruntime
+          path: windows_x86_64
+
+      - name: Add linux_x86_64 aotruntime binary to windows_x86_64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: linux_x86_64_aotruntime
+          path: windows_x86_64
+
+      - name: Add linux_arm64 aotruntime binary to windows_x86_64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: linux_arm64_aotruntime
+          path: windows_x86_64
+
+      - name: Add android_arm64 binaries to windows_x86_64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: android_arm64
+          path: windows_x86_64
+
+      - name: Zip windows_x86_64 release binaries
+        run: zip -qq -r windows_x86_64.zip windows_x86_64
+
+
+
+
+
+      - name: Add windows_arm64 binaries to windows_arm64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: windows_arm64
+          path: windows_arm64
+
+      - name: Add linux_x86_64 aotruntime binary to windows_arm64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: linux_x86_64_aotruntime
+          path: windows_arm64
+
+      - name: Add linux_arm64 aotruntime binary to windows_arm64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: linux_arm64_aotruntime
+          path: windows_arm64
+
+      - name: Add android_arm64 binaries to windows_arm64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: android_arm64
+          path: windows_arm64
+
+      - name: Zip windows_arm64 release binaries
+        run: zip -qq -r windows_arm64.zip windows_arm64
+
+
+
+
+      - name: Add linux_x86_64 binaries to linux_x86_64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: linux_x86_64
+          path: linux_x86_64
+
+      - name: Add linux_arm64 aotruntime binary to linux_x86_64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: linux_arm64_aotruntime
+          path: linux_x86_64
+
+      - name: Add android_arm64 binaries to linux_x86_64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: android_arm64
+          path: linux_x86_64
+
+      - name: Zip linux_x86_64 release binaries
+        run: zip -qq -r linux_x86_64.zip linux_x86_64
+
+
+
+
+      - name: Add linux_arm64 binaries to linux_arm64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: linux_arm64
+          path: linux_arm64
+
+      - name: Add linux_x86_64 aotruntime binary to linux_arm64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: linux_x86_64_aotruntime
+          path: linux_arm64
+
+      - name: Add android_arm64 binaries to linux_arm64 release
+        uses: actions/download-artifact@v4
+        with:
+          name: android_arm64
+          path: linux_arm64
+
+      - name: Zip linux_arm64 release binaries
+        run: zip -qq -r linux_arm64.zip linux_arm64
+
+
+      - name: Release binaries
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          files: |
+            macos_arm64.zip
+            windows_x86_64.zip
+            windows_arm64.zip
+            linux_x86_64.zip
+            linux_arm64.zip
