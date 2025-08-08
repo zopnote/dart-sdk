@@ -1,29 +1,20 @@
 name: Create binary release packages
 on:
     workflow_dispatch:
-    push:
-      tags:
-        - "v*.*.*"
 
 jobs:
+  build:
+    uses: ./.github/workflows/create_cc_binaries.yml
   collect:
+    needs: build
     runs-on:
       ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Setup Dart SDK
         uses: dart-lang/setup-dart@v1
 
       - name: Setup zip
         uses: montudor/action-zip@v1
-
-      - name: Compile binaries
-        uses: ./.github/workflows/create_cc_binaries.yml
-
-
-
 
       - name: Add macos_arm64 binaries to macos_arm64 release
         uses: actions/download-artifact@v4
