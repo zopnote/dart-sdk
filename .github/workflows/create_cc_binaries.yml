@@ -39,14 +39,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: 'macos_arm64'
-          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/xcodebuild/out/ProductXARM64/dartcc-sdk
+          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/xcodebuild/out/ProductXARM64/dartcc-sdk/**/**
 
       - name: Save ios_arm64 artifacts
         if: runner.os == 'macOS'
         uses: actions/upload-artifact@v4
         with:
           name: 'ios_arm64'
-          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/xcodebuild/out/ProductiOSARM64/dartcc-sdk
+          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/xcodebuild/out/ProductiOSARM64/dartcc-sdk/**/**
 
 
 
@@ -56,7 +56,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: 'windows_x86_64'
-          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductX64/dartcc-sdk
+          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductX64/dartcc-sdk/**/**
 
       - name: Save windows_arm64 aotruntime artifact
         if: runner.os == 'Windows'
@@ -70,7 +70,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: 'windows_arm64'
-          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductXARM64/dartcc-sdk
+          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductXARM64/dartcc-sdk/**/**
 
 
 
@@ -80,7 +80,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: 'android_arm64'
-          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductAndroidARM64/dartcc-sdk
+          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductAndroidARM64/dartcc-sdk/**/**
 
 
 
@@ -90,7 +90,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: 'linux_arm64'
-          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductX64/dartcc-sdk
+          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductX64/dartcc-sdk/**/**
 
       - name: Save linux_x86_64 aotruntime artifact
         if: runner.os == 'Linux'
@@ -107,7 +107,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: 'linux_x86_64'
-          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductXARM64/dartcc-sdk
+          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductXARM64/dartcc-sdk/**/**
 
       - name: Save linux_arm64 aotruntime artifact
         if: runner.os == 'Linux'
