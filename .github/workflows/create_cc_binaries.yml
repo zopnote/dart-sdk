@@ -14,6 +14,10 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     steps:
+
+      - name: Setup zip
+        uses: montudor/action-zip@v1
+
       - name: Setup Dart SDK
         uses: dart-lang/setup-dart@v1
 
@@ -34,29 +38,50 @@ jobs:
 
 
 
+      - name: Zip macos_arm64 binaries
+        if: runner.os == 'macOS'
+        run: zip -qq -r macos_arm64.zip dartcc-sdk
+        working-directory: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/xcodebuild/out/ProductXARM64
+
       - name: Save macos_arm64 artifacts
         if: runner.os == 'macOS'
         uses: actions/upload-artifact@v4
         with:
           name: 'macos_arm64'
-          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/xcodebuild/out/ProductXARM64/dartcc-sdk/**/**
+          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/xcodebuild/out/ProductXARM64/macos_arm64.zip
+
+      - name: Zip ios_arm64 binaries
+        if: runner.os == 'macOS'
+        run: zip -qq -r ios_arm64.zip dartcc-sdk
+        working-directory: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/xcodebuild/out/ProductiOSARM64
 
       - name: Save ios_arm64 artifacts
         if: runner.os == 'macOS'
         uses: actions/upload-artifact@v4
         with:
           name: 'ios_arm64'
-          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/xcodebuild/out/ProductiOSARM64/dartcc-sdk/**/**
+          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/xcodebuild/out/ProductiOSARM64/ios_arm64.zip
 
 
 
+
+      - name: Zip windows_x86_64 binaries
+        if: runner.os == 'Windows'
+        run: zip -qq -r windows_x86_64.zip dartcc-sdk
+        working-directory: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductX64
 
       - name: Save windows_x86_64 artifacts
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
           name: 'windows_x86_64'
-          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductX64/dartcc-sdk/**/**
+          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductX64/windows_x86_64.zip
+
+
+      - name: Zip windows_x86_64 binaries
+        if: runner.os == 'Windows'
+        run: zip -qq -r windows_x86_64.zip dartcc-sdk
+        working-directory: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductX64
 
       - name: Save windows_arm64 aotruntime artifact
         if: runner.os == 'Windows'
@@ -65,32 +90,74 @@ jobs:
           name: 'windows_arm64_aotruntime'
           path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductXARM64/dartcc-sdk/bin/dartaotruntime_windows_arm64.exe
 
+      - name: Zip windows_arm64 binaries
+        if: runner.os == 'Windows'
+        run: zip -qq -r windows_arm64.zip dartcc-sdk
+        working-directory: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductXARM64
+
       - name: Save windows_arm64 artifacts
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
           name: 'windows_arm64'
-          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductXARM64/dartcc-sdk/**/**
+          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductXARM64/windows_arm64.zip
 
 
 
+
+      - name: Zip android_arm64 binaries
+        if: runner.os == 'Linux'
+        run: zip -qq -r android_arm64.zip dartcc-sdk
+        working-directory: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductAndroidARM64
 
       - name: Save android_arm64 artifacts
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v4
         with:
           name: 'android_arm64'
-          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductAndroidARM64/dartcc-sdk/**/**
+          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductAndroidARM64/android_arm64.zip
 
 
 
 
-      - name: Save linux_x86_64 artifacts
+      - name: Zip linux_x86_64 binaries
+        if: runner.os == 'Linux'
+        run: zip -qq -r linux_x86_64.zip dartcc-sdk
+        working-directory: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductAndroidARM64
+
+      - name: Save linux_x86_64 binaries
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v4
         with:
           name: 'linux_arm64'
-          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductX64/dartcc-sdk/**/**
+          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductX64/dartcc-sdk/
+
+      - name: Zip linux_x86_64 aotruntime binary
+        if: runner.os == 'Linux'
+        run: zip -qq -r linux_x86_64.zip dartcc-sdk
+        working-directory: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductX64
+
+      - name: Save linux_x86_64 aotruntime binary
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'linux_arm64'
+          path: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductX64/dartcc-sdk/
+
+
+
+
+
+      - name: Zip android_arm64 binaries
+        if: runner.os == 'Linux'
+        run: zip -qq -r android_arm64.zip dartcc-sdk
+        working-directory: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductAndroidARM64
+
+
+      - name: Zip android_arm64 aotruntime binary
+        if: runner.os == 'Linux'
+        run: zip -qq -r android_arm64.zip dartcc-sdk
+        working-directory: dartcc/out/${{ matrix.os_name[runner.os] }}/dart_sdk/sdk/out/ProductAndroidARM64
 
       - name: Save linux_x86_64 aotruntime artifact
         if: runner.os == 'Linux'
